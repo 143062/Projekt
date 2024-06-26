@@ -1,0 +1,210 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding: 0 2rem; /* Odstęp od krawędzi */
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    justify-content: space-between;
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    color: #6DC1BC;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.profile-icon {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.admin-title {
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+}
+
+.content {
+    margin-top: 220px;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem; /* Dodanie odstępów po bokach */
+    box-sizing: border-box; /* Upewnienie się, że padding jest wliczany w szerokość */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.table-container, .form-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background-color: #4A5255;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    border: 1px solid #4A5255;
+    text-align: left;
+    color: #ffffff;
+}
+
+th {
+    background-color: #6DC1BC;
+    text-transform: uppercase;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #3d4447;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #2F3638;
+}
+
+.delete-button {
+    padding: 5px 10px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #ff3333;
+}
+
+h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+label {
+    color: #ffffff;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+input {
+    padding: 15px;
+    border: 1px solid #6DC1BC;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #2F3638;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+input:focus {
+    background-color: #5a6265;
+    color: #ffffff;
+}
+
+.add-button {
+    padding: 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 767px) {
+    .profile-icon {
+        width: 100px;
+        height: 100px;
+        margin-right: 10px;
+    }
+
+    .logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .admin-title {
+        font-size: 1.5rem;
+    }
+
+    .content {
+        margin-top: 180px;
+        padding: 0 1rem; /* Dostosowanie paddingu dla widoku mobilnego */
+        align-items: center; /* Wyśrodkowanie zawartości */
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    .delete-button {
+        padding: 3px 7px;
+        font-size: 14px;
+    }
+
+    input {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .add-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .table-container, .form-container {
+        padding: 10px;
+    }
+}
