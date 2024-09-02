@@ -12,11 +12,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalNoteContent = document.getElementById('modal-note-content');
     const editNoteButton = document.getElementById('edit-note');
     const modalSharedWithContainer = document.getElementById('modal-shared-with');
+    const searchInput = document.querySelector('.search-bar input');
+    const myNotesContainer = document.getElementById('my-notes');
     const maxFriends = 3; // Maksymalna liczba wyświetlanych znajomych
     let friends = [];
     let friendCounter = 1; // Licznik znajomych
     let editingNoteIndex = -1; // Indeks edytowanej notatki
-    const notes = [];
 
     toggleButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -50,34 +51,63 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (editingNoteIndex === -1) {
-            const noteIndex = notes.length;
-            const noteCard = document.createElement('div');
-            noteCard.className = 'note-card';
-            noteCard.setAttribute('data-index', noteIndex);
-            noteCard.innerHTML = `
-                <h3>${title}</h3>
-                <p>${content}</p>
-            `;
-            noteCard.addEventListener('click', function () {
-                showNoteModal(noteCard, noteIndex);
-            });
+        const noteData = {
+            title: title,
+            content: content
+        };
 
-            document.getElementById('my-notes').appendChild(noteCard);
-            notes.push({ title, content, friends: [...friends] });
-        } else {
-            const noteCards = document.querySelectorAll('.note-card');
-            const noteCard = noteCards[editingNoteIndex];
-            noteCard.querySelector('h3').textContent = title;
-            noteCard.querySelector('p').textContent = content;
-            notes[editingNoteIndex] = { title, content, friends: [...friends] };
+        if (editingNoteIndex !== -1) {
+            noteData.id = notes[editingNoteIndex].id;
         }
 
-        noteTitle.value = '';
-        noteContent.value = '';
-        sharedWithContainer.innerHTML = '';
-        friends = [];
-        noteFormContainer.style.display = 'none';
+        console.log("Editing note index:", editingNoteIndex);
+        console.log("Note ID:", noteData.id);
+        console.log("Sending note data:", noteData);
+
+        fetch('/add_note', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(noteData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Received response:", data);
+
+            // Po zapisaniu notatki zamykamy okno formularza
+            noteFormContainer.style.display = 'none';
+
+            if (editingNoteIndex === -1) {
+                const noteIndex = document.querySelectorAll('.note-card').length;
+                const noteCard = document.createElement('div');
+                noteCard.className = 'note-card';
+                noteCard.setAttribute('data-index', noteIndex);
+                noteCard.setAttribute('data-id', data.id);
+                noteCard.innerHTML = `
+                    <h3>${title}</h3>
+                    <p>${content}</p>
+                `;
+                noteCard.addEventListener('click', function () {
+                    showNoteModal(noteCard, noteIndex);
+                });
+
+                myNotesContainer.appendChild(noteCard);
+            } else {
+                const noteCard = document.querySelector(`.note-card[data-index="${editingNoteIndex}"]`);
+                noteCard.querySelector('h3').textContent = title;
+                noteCard.querySelector('p').textContent = content;
+            }
+
+            // Czyścimy pola formularza
+            noteTitle.value = '';
+            noteContent.value = '';
+            sharedWithContainer.innerHTML = '';
+            friends = [];
+        })
+        .catch(error => {
+            console.error('Błąd podczas dodawania notatki:', error);
+        });
     });
 
     noteFormContainer.addEventListener('click', function (event) {
@@ -124,16 +154,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showNoteModal(noteCard, index) {
-        const note = notes[index] || {
+        const noteId = noteCard.getAttribute('data-id');
+        const note = {
             title: noteCard.querySelector('h3').textContent,
             content: noteCard.querySelector('p').textContent,
             friends: []
         };
+
+        console.log("Showing modal for note index:", index);
+        console.log("Note ID in modal:", noteId);
+
         modalNoteTitle.textContent = note.title;
         modalNoteContent.textContent = note.content;
         friends = [...note.friends];
         updateSharedWithModal();
-        editingNoteIndex = index; // Ustawianie indeksu edytowanej notatki
+        editingNoteIndex = index;
         noteModalContainer.style.display = 'flex';
     }
 
@@ -162,6 +197,20 @@ document.addEventListener('DOMContentLoaded', function () {
         updateSharedWith();
         noteModalContainer.style.display = 'none';
         noteFormContainer.style.display = 'flex';
+    });
+
+    // Nasłuchiwanie na wpisywanie w pole wyszukiwania
+    searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase();
+        document.querySelectorAll('.note-card').forEach(noteCard => {
+            const title = noteCard.querySelector('h3').textContent.toLowerCase();
+            const content = noteCard.querySelector('p').textContent.toLowerCase();
+            if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                noteCard.style.display = 'block';
+            } else {
+                noteCard.style.display = 'none';
+            }
+        });
     });
 
     // Dodaj nasłuchiwanie na istniejące notatki

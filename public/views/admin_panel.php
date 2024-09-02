@@ -29,28 +29,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>user1</td>
-                            <td>user1@example.com</td>
-                            <td>
-                                <button class="delete-button">Usuń</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>user2</td>
-                            <td>user2@example.com</td>
-                            <td>
-                                <button class="delete-button">Usuń</button>
-                            </td>
-                        </tr>
+                        <?php if (!empty($users)): ?>
+                            <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($user['id']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['login']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                    <td>
+                                        <form method="post" action="/admin/delete_user">
+                                            <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
+                                            <button type="submit" class="delete-button">Usuń</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4">Brak użytkowników do wyświetlenia.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
             <div class="form-container">
                 <h2>Dodaj Nowego Użytkownika</h2>
-                <form>
+                <form method="post" action="/admin/add_user">
                     <div class="form-group">
                         <label for="username">Nazwa Użytkownika:</label>
                         <input type="text" id="username" name="username" required>

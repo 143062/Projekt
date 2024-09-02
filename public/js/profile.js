@@ -2,22 +2,6 @@ document.getElementById('profile-button').addEventListener('click', function () 
     document.getElementById('profile-form-modal').style.display = 'flex';
 });
 
-document.getElementById('upload-button').addEventListener('click', function () {
-    const fileInput = document.getElementById('file-input');
-    const file = fileInput.files[0];
-
-    if (file) {
-        const reader = new FileReader();
-        
-        reader.onload = function (e) {
-            document.getElementById('profile-picture').src = e.target.result;
-            document.getElementById('profile-form-modal').style.display = 'none';
-        }
-        
-        reader.readAsDataURL(file);
-    }
-});
-
 document.getElementById('file-input').addEventListener('change', function () {
     const fileInput = document.getElementById('file-input');
     const fileName = document.getElementById('file-name');

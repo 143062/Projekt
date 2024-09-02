@@ -23,15 +23,15 @@ class NoteController
             $title = $data['title'];
             $content = $data['content'];
             $userId = $_SESSION['user_id'];
+            $noteId = $data['id'] ?? null;
 
-            $noteId = $this->noteRepository->addNote($userId, $title, $content);
+            $result = $this->noteRepository->saveNote($userId, $noteId, $title, $content);
 
-            if ($noteId) {
-                echo json_encode(['success' => true]);
+            if ($result) {
+                echo json_encode(['success' => true, 'id' => $result]);
             } else {
-                echo json_encode(['success' => false]);
+                echo json_encode(['success' => false, 'message' => 'Błąd podczas zapisywania notatki.']);
             }
-
             exit();
         }
     }
