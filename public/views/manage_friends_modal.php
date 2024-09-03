@@ -5,6 +5,7 @@
             <input type="text" id="friend-login" class="friend-username-input" placeholder="Wpisz login znajomego">
             <button type="submit" class="add-friend-button">Dodaj znajomego</button>
         </form>
+        <p id="friend-error-message" style="color: red; display: none;"></p> <!-- Dodajemy miejsce na błąd -->
         <div class="friends-list">
             <h3>Aktualni znajomi</h3>
             <ul id="friends-list" class="friends-list-ul">

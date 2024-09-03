@@ -20,17 +20,32 @@ class FriendController
     {
         $userId = $_SESSION['user_id'];
         $friends = $this->friendRepository->getFriendsByUserId($userId);
-        $users = $this->userRepository->getAllUsersExcept($userId);
-        include 'public/views/friends.php';
+        header('Content-Type: application/json');
+        echo json_encode($friends);
+        exit();
     }
 
     public function addFriend()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userId = $_SESSION['user_id'];
-            $friendId = $_POST['friend_id'];
-            $this->friendRepository->addFriend($userId, $friendId);
-            header('Location: /friends');
+            $friendLogin = $_POST['friend_login'];
+
+            $friend = $this->userRepository->getUserByLogin($friendLogin);
+
+            header('Content-Type: application/json');
+            if ($friend) {
+                $friendId = $friend['id'];
+                $result = $this->friendRepository->addFriend($userId, $friendId);
+                
+                if ($result) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Znajomy już istnieje na Twojej liście.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Nie znaleziono użytkownika o podanym loginie.']);
+            }
             exit();
         }
     }
