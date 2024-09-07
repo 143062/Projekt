@@ -14,8 +14,13 @@
             <div class="logo">
                 <img src="/public/img/logo.svg" alt="Logo" class="logo__image">
             </div>
+
+            <!-- Miejsce na dynamiczne komunikaty o błędach -->
             <div class="login-form">
-                <form action="/login" method="post" class="form-column">
+                <div class="error-container" style="display: none;">
+                    <p class="error-message"></p>
+                </div>
+                <form id="login-form" class="form-column">
                     <input type="text" id="login" name="login" placeholder="Login" required>
                     <input type="password" id="password" name="password" placeholder="Hasło" required>
                     <div class="buttons-container">
@@ -26,5 +31,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Dodajemy skrypt do obsługi AJAX -->
+    <script src="/public/js/login.js"></script>
 </body>
 </html>

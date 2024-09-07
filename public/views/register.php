@@ -14,8 +14,13 @@
             <div class="logo">
                 <img src="/public/img/logo.svg" alt="Logo" class="logo__image">
             </div>
+
+            <!-- Miejsce na dynamiczne komunikaty o błędach -->
             <div class="register-form">
-                <form action="/register" method="post" class="form-column">
+                <div class="error-container" style="display: none;">
+                    <p class="error-message"></p>
+                </div>
+                <form id="register-form" class="form-column">
                     <input type="email" id="email" name="email" placeholder="Email" required>
                     <input type="text" id="login" name="login" placeholder="Login" required>
                     <input type="password" id="password" name="password" placeholder="Hasło" required>
@@ -28,5 +33,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Dodajemy skrypt do obsługi AJAX -->
+    <script src="/public/js/register.js"></script>
 </body>
 </html>
