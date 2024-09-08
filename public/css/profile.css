@@ -221,6 +221,23 @@
 #friends-list li {
     padding: 10px;
     border-bottom: 1px solid #7FA6C0;
+    display: flex;
+    justify-content: space-between; /* Dodano, aby przycisk był po prawej stronie */
+}
+
+.delete-friend-button {
+    background-color: #ff4d4d; /* Kolor czerwony */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto; /* Ograniczenie szerokości przycisku */
+}
+
+.delete-friend-button:hover {
+    background-color: #cc0000; /* Ciemniejszy czerwony na hover */
 }
 
 .file-input {
