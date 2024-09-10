@@ -24,14 +24,22 @@ class Router
         }
 
         $controllerAction = self::$routes[$method][$url];
-        $controllerName = $controllerAction[0];
-        $action = $controllerAction[1];
 
-        $controller = new $controllerName;
-        if (method_exists($controller, $action)) {
-            $controller->$action();
+        if (is_array($controllerAction)) {
+            $controllerName = $controllerAction[0];
+            $action = $controllerAction[1];
+
+            $controller = new $controllerName;
+            if (method_exists($controller, $action)) {
+                $controller->$action();
+            } else {
+                echo "Method not found.";
+            }
+        } elseif (is_callable($controllerAction)) {
+
+            $controllerAction();
         } else {
-            echo "Method not found.";
+            echo "Invalid route configuration.";
         }
     }
 }
