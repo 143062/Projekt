@@ -4,27 +4,25 @@ namespace App\Controllers;
 
 class AppController
 {
-    public function run()
+    public function run($isTesting = false)
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
         if ($uri === '/' || $uri === '/login') {
-            $controller = new UserController();
-            $controller->login();
+            $controller = new UserController($isTesting);
         } elseif ($uri === '/register') {
-            $controller = new UserController();
+            $controller = new UserController($isTesting);
             $controller->register();
         } elseif ($uri === '/add-note') {
-            $controller = new NoteController();
+            $controller = new NoteController($isTesting);
             $controller->addNote();
         } elseif ($uri === '/profile') {
-            $controller = new UserController();
+            $controller = new UserController($isTesting);
             $controller->profile();
         } elseif ($uri === '/admin') {
-            $controller = new AdminController();
+            $controller = new AdminController($isTesting);
             $controller->adminPanel();
         } else {
-            // Default action or 404
             echo "Page not found.";
         }
     }
